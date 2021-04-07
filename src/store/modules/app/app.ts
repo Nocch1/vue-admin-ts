@@ -1,100 +1,93 @@
-/*
- * @Description:
- * @Autor: WJM
- * @Date: 2021-01-16 15:49:20
- * @LastEditors: WJM
- * @LastEditTime: 2021-01-16 16:01:31
- */
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
-import { getSidebarStatus, getSize, setSidebarStatus, setLanguage, setSize } from '@/utils/cookies'
-import { getLocale } from '@/locales'
-import { store } from '@/store'
+import { Action, getModule, Module, Mutation, VuexModule } from 'vuex-module-decorators';
+import { getSidebarStatus, getSize, setLanguage, setSidebarStatus, setSize } from '@/utils/cookies';
+import { getLocale } from '@/locales';
+import { store } from '@/store';
 
 export enum DeviceType {
-  Mobile,
-  Desktop,
+    Mobile,
+    Desktop,
 }
 
 export interface AppState {
-  device: DeviceType
-  sidebar: {
-    opened: boolean
-    withoutAnimation: boolean
-  }
-  language: string
-  size: string
+    device: DeviceType
+    sidebar: {
+        opened: boolean
+        withoutAnimation: boolean
+    }
+    language: string
+    size: string
 }
 
 @Module({ dynamic: true, store, name: 'app' })
 class App extends VuexModule implements AppState {
-  public sidebar = {
-    opened: getSidebarStatus() !== 'closed',
-    withoutAnimation: false
-  }
+    public sidebar = {
+        opened: getSidebarStatus() !== 'closed',
+        withoutAnimation: false
+    };
 
-  public device = DeviceType.Desktop
-  public language = getLocale()
-  public size = getSize() || 'medium'
+    public device = DeviceType.Desktop;
+    public language = getLocale();
+    public size = getSize() || 'medium';
 
-  @Mutation
-  private TOGGLE_SIDEBAR(withoutAnimation: boolean) {
-    this.sidebar.opened = !this.sidebar.opened
-    this.sidebar.withoutAnimation = withoutAnimation
-    if (this.sidebar.opened) {
-      setSidebarStatus('opened')
-    } else {
-      setSidebarStatus('closed')
+    @Action
+    public ToggleSideBar(withoutAnimation: boolean) {
+        this.TOGGLE_SIDEBAR(withoutAnimation);
     }
-  }
 
-  @Mutation
-  private CLOSE_SIDEBAR(withoutAnimation: boolean) {
-    this.sidebar.opened = false
-    this.sidebar.withoutAnimation = withoutAnimation
-    setSidebarStatus('closed')
-  }
+    @Action
+    public CloseSideBar(withoutAnimation: boolean) {
+        this.CLOSE_SIDEBAR(withoutAnimation);
+    }
 
-  @Mutation
-  private TOGGLE_DEVICE(device: DeviceType) {
-    this.device = device
-  }
+    @Action
+    public ToggleDevice(device: DeviceType) {
+        this.TOGGLE_DEVICE(device);
+    }
 
-  @Mutation
-  private SET_LANGUAGE(language: string) {
-    this.language = language
-    setLanguage(this.language)
-  }
+    @Action
+    public SetLanguage(language: string) {
+        this.SET_LANGUAGE(language);
+    }
 
-  @Mutation
-  private SET_SIZE(size: string) {
-    this.size = size
-    setSize(this.size)
-  }
+    @Action
+    public SetSize(size: string) {
+        this.SET_SIZE(size);
+    }
 
-  @Action
-  public ToggleSideBar(withoutAnimation: boolean) {
-    this.TOGGLE_SIDEBAR(withoutAnimation)
-  }
+    @Mutation
+    private TOGGLE_SIDEBAR(withoutAnimation: boolean) {
+        this.sidebar.opened = !this.sidebar.opened;
+        this.sidebar.withoutAnimation = withoutAnimation;
+        if (this.sidebar.opened) {
+            setSidebarStatus('opened');
+        } else {
+            setSidebarStatus('closed');
+        }
+    }
 
-  @Action
-  public CloseSideBar(withoutAnimation: boolean) {
-    this.CLOSE_SIDEBAR(withoutAnimation)
-  }
+    @Mutation
+    private CLOSE_SIDEBAR(withoutAnimation: boolean) {
+        this.sidebar.opened = false;
+        this.sidebar.withoutAnimation = withoutAnimation;
+        setSidebarStatus('closed');
+    }
 
-  @Action
-  public ToggleDevice(device: DeviceType) {
-    this.TOGGLE_DEVICE(device)
-  }
+    @Mutation
+    private TOGGLE_DEVICE(device: DeviceType) {
+        this.device = device;
+    }
 
-  @Action
-  public SetLanguage(language: string) {
-    this.SET_LANGUAGE(language)
-  }
+    @Mutation
+    private SET_LANGUAGE(language: string) {
+        this.language = language;
+        setLanguage(this.language);
+    }
 
-  @Action
-  public SetSize(size: string) {
-    this.SET_SIZE(size)
-  }
+    @Mutation
+    private SET_SIZE(size: string) {
+        this.size = size;
+        setSize(this.size);
+    }
 }
 
-export const AppModule = getModule(App)
+export const AppModule = getModule(App);

@@ -1,10 +1,3 @@
-/*
- * @Description: 用户相关接口
- * @Author: ZY
- * @Date: 2020-12-28 09:46:46
- * @LastEditors: ZY
- * @LastEditTime: 2021-01-23 15:54:34
- */
 
 import { post, prefix ,get} from "../requestDecorator";
 import userList from "../mockdb/userList";

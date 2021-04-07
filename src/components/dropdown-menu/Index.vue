@@ -1,57 +1,43 @@
 <template>
-  <div
-    :class="{active: isActive}"
-    class="share-dropdown-menu"
-  >
-    <div class="share-dropdown-menu-wrapper">
-      <span
-        class="share-dropdown-menu-title"
-        @click.self="clickTitle"
-      >{{ title }}</span>
-      <div
-        v-for="(item, index) of items"
-        :key="index"
-        class="share-dropdown-menu-item"
-      >
-        <a
-          v-if="item.href"
-          :href="item.href"
-          target="_blank"
-        >{{ item.title }}</a>
-        <span v-else>{{ item.title }}</span>
-      </div>
+    <div :class="{active: isActive}" class="share-dropdown-menu">
+        <div class="share-dropdown-menu-wrapper">
+            <span class="share-dropdown-menu-title" @click.self="clickTitle">{{ title }}</span>
+            <div v-for="(item, index) of items" :key="index" class="share-dropdown-menu-item">
+                <a v-if="item.href" :href="item.href" target="_blank">{{ item.title }}</a>
+                <span v-else>{{ item.title }}</span>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue';
 
 export default defineComponent({
-  props: {
-    items: {
-      type: Array,
-      default: () => {
-        return []
-      }
+    props: {
+        items: {
+            type: Array,
+            default: () => {
+                return [];
+            }
+        },
+        title: {
+            type: String,
+            default: 'vue'
+        }
     },
-    title: {
-      type: String,
-      default: 'vue'
+    setup() {
+        const state = reactive({
+            isActive: false
+        });
+        const clickTitle = () => {
+            state.isActive = !state.isActive;
+        };
+        return {
+            ...toRefs(state), clickTitle
+        };
     }
-  },
-  setup() {
-    const state = reactive({
-      isActive: false
-    })
-    const clickTitle = () => {
-      state.isActive = !state.isActive
-    }
-    return {
-      ...toRefs(state), clickTitle
-    }
-  }
-})
+});
 </script>
 
 <style lang="scss" scoped>
@@ -59,70 +45,70 @@ $item-length: 10; // Should be no less than items.length
 $transition-time: .1s;
 
 .share-dropdown-menu {
-  width: 250px;
-  position: relative;
-  z-index: 1;
-  height: auto!important;
-
-  &-title {
-    width: 100%;
-    display: block;
-    cursor: pointer;
-    background: black;
-    color: white;
-    height: 60px;
-    line-height: 60px;
-    font-size: 20px;
-    text-align: center;
-    z-index: 2;
-    transform: translate3d(0,0,0);
-  }
-
-  &-wrapper {
     position: relative;
-  }
+    z-index: 1;
+    width: 250px;
+    height: auto !important;
 
-  &-item {
-    text-align: center;
-    position: absolute;
-    width: 100%;
-    background: #e0e0e0;
-    color: black;
-    line-height: 60px;
-    height: 60px;
-    cursor: pointer;
-    font-size: 18px;
-    overflow: hidden;
-    opacity: 1;
-    transition: transform 0.28s ease;
-
-    &:hover {
-      background: black;
-      color: white;
+    &-title {
+        font-size: 20px;
+        line-height: 60px;
+        z-index: 2;
+        display: block;
+        width: 100%;
+        height: 60px;
+        cursor: pointer;
+        transform: translate3d(0, 0, 0);
+        text-align: center;
+        color: white;
+        background: black;
     }
 
-    @for $i from 1 through $item-length {
-      &:nth-of-type(#{$i}) {
-        z-index: -1;
-        transition-delay: $i*$transition-time;
-        transform: translate3d(0, -60px, 0);
-      }
-    }
-  }
-
-  &.active {
-    .share-dropdown-menu-wrapper {
-      z-index: 1;
+    &-wrapper {
+        position: relative;
     }
 
-    .share-dropdown-menu-item {
-      @for $i from 1 through $item-length {
-        &:nth-of-type(#{$i}) {
-          transition-delay: ($item-length - $i)*$transition-time;
-          transform: translate3d(0, ($i - 1)*60px, 0);
+    &-item {
+        font-size: 18px;
+        line-height: 60px;
+        position: absolute;
+        overflow: hidden;
+        width: 100%;
+        height: 60px;
+        cursor: pointer;
+        transition: transform 0.28s ease;
+        text-align: center;
+        opacity: 1;
+        color: black;
+        background: #e0e0e0;
+
+        &:hover {
+            color: white;
+            background: black;
         }
-      }
+
+        @for $i from 1 through $item-length {
+            &:nth-of-type(#{$i}) {
+                z-index: -1;
+                transition-delay: $i*$transition-time;
+                transform: translate3d(0, -60px, 0);
+            }
+        }
     }
-  }
+
+    &.active {
+        .share-dropdown-menu-wrapper {
+            z-index: 1;
+        }
+
+        .share-dropdown-menu-item {
+            @for $i from 1 through $item-length {
+                &:nth-of-type(#{$i}) {
+                    transition-delay: ($item-length - $i)*$transition-time;
+                    transform: translate3d(0, ($i - 1)*60px, 0);
+                }
+            }
+        }
+    }
 }
 </style>

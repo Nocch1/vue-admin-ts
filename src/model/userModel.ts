@@ -1,11 +1,3 @@
-/*
- * @Description:
- * @Author: ZY
- * @Date: 2020-12-29 15:57:00
- * @LastEditors: scy😊
- * @LastEditTime: 2021-01-15 09:33:11
- */
-
 // {
 //     "code": 0,
 //     "msg": "success",
@@ -25,17 +17,17 @@
 // }
 
 export interface UserInfoModel {
-  id: number
-  username: string
-  password: string
-  name: string
-  avatar: string
-  introduction: string
-  email: string
-  phone: string
-  roles: string[]
+    id: number
+    username: string
+    password: string
+    name: string
+    avatar: string
+    introduction: string
+    email: string
+    phone: string
+    roles: string[]
 }
 
 export interface Users {
-  items: any
+    items: any
 }
